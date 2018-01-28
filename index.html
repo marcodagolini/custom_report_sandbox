@@ -1855,7 +1855,9 @@ checklogin(accnumb, bearer);
 					      loadClosedConvs(body, offset, callback);
 				      }
 				      else{
+					      console.log(answer.length);
 					      answer = answer.concat(data.conversationHistoryRecords);
+					      console.log(answer.length);
 					      loadCustomStats(answer);
 					      loadStats(answer);
 				      }
