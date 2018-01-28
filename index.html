@@ -1834,6 +1834,7 @@ checklogin(accnumb, bearer);
 		 body = '{"start":{"from":' + start + ',"to":' + end + '}, "status": ["OPEN"], "skillIds": ["' + skillNumber + '"]';
 	 }
 	 body = body + ' ,"agentGroupIds":["' + teamNumber + '"]}';
+	 console.log(body);
 	 console.log("(HISTORICAL) skill: " + skillNumber + " ***** team: " + teamNumber + " ***** start: " + start + " ***** end: " + end);
 	 function loadClosedConvs(body, offset, callback) {
 	 
@@ -1900,6 +1901,7 @@ checklogin(accnumb, bearer);
 						       body = '{"start":{"from":' + start + ',"to":' + end + '}, "status": ["CLOSE"], "skillIds": ["' + skillNumber + '"]';
 					       }
 					      body = body + ' ,"agentGroupIds":["' + teamNumber + '"]}';
+					      console.log(body);
 					      loadClosedConvs(body, offset, callback);
 				      }
 				      
