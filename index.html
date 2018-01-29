@@ -925,6 +925,9 @@ span.psw {
 	  totalTime = 0;
 	  numberTotal = 0;
 	  isAnswered = 0;
+	  document.getElementById("customTimeFTAClosedFirstBulk").innerHTML = 0;
+	  document.getElementById("customTimeFTAClosedSecondBulk").innerHTML = 0;
+	  document.getElementById("customTimeFTAClosedThirdBulk").innerHTML = 0;
 	  for (var m = 0; m < length; m++){
 		 TimeAnswer = 0;
 		 howManyMessages = answer[m].messageRecords.length;
@@ -942,6 +945,17 @@ span.psw {
 				if (isAnswered && ((whatTime > customDate) && (whatTime < endCustomDate))){
 					totalTime = totalTime + TimeAnswer;
 					numberTotal = numberTotal + 1;
+					switch(findBulk(TimeAnswer)) {
+							case 1:
+								document.getElementById("customTimeFTAClosedFirstBulk").innerHTML ++;
+								break;
+							case 2:
+								document.getElementById("customTimeFTAClosedSecondBulk").innerHTML ++;
+								break;
+							case 3:
+								document.getElementById("customTimeFTAClosedThirdBulk").innerHTML ++;
+								break;
+						}
 				}
 		 	}	
 		 }
