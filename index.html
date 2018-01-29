@@ -1575,19 +1575,63 @@ span.psw {
 				TimeAnswer = (answer[m].agentParticipants[0].timeL - whatTime)/1000;
 				if (whatTime > tenMinutesAgo){
 					TotalTimeTenMinutesAgo = TotalTimeTenMinutesAgo + TimeAnswer;
-					numberTenMinutesAgo = numberTenMinutesAgo + 1; 
+					numberTenMinutesAgo = numberTenMinutesAgo + 1;
+					switch(findBulk(TimeAnswer)) {
+					case 1:
+						document.getElementById("last10ClosedTimeToAcceptFirstBulk").innerHTML ++;
+						break;
+					case 2:
+						document.getElementById("last10ClosedTimeToAcceptSecondBulk").innerHTML ++;
+						break;
+					case 3:
+						document.getElementById("last10ClosedTimeToAcceptThirdBulk").innerHTML ++;
+						break;
+					}
 		 		}
 		 		else if (whatTime > oneHourAgo){
 					TotalTimeOneHourAgo = TotalTimeOneHourAgo + TimeAnswer;
 					numberOneHourAgo = numberOneHourAgo + 1;
+					switch(findBulk(TimeAnswer)) {
+					case 1:
+						document.getElementById("lastHourClosedTimeToAcceptFirstBulk").innerHTML ++;
+						break;
+					case 2:
+						document.getElementById("lastHourClosedTimeToAcceptSecondBulk").innerHTML ++;
+						break;
+					case 3:
+						document.getElementById("lastHourClosedTimeToAcceptThirdBulk").innerHTML ++;
+						break;
+					}
 		 		}
 		 		else if (whatTime > midnightToday){
 					TotalTimeOneDayAgo = TotalTimeOneDayAgo + TimeAnswer;
 					numberOneDayAgo = numberOneDayAgo + 1;
+					switch(findBulk(TimeAnswer)) {
+					case 1:
+						document.getElementById("lastDayClosedTimeToAcceptFirstBulk").innerHTML ++;
+						break;
+					case 2:
+						document.getElementById("lastDayClosedTimeToAcceptSecondBulk").innerHTML ++;
+						break;
+					case 3:
+						document.getElementById("lastDayClosedTimeToAcceptThirdBulk").innerHTML ++;
+						break;
+					}
 		 		}
 		 		else {
 					TotalTimeOneMonthAgo = TotalTimeOneMonthAgo + TimeAnswer;
 					numberOneMonthAgo = numberOneMonthAgo + 1;
+					switch(findBulk(TimeAnswer)) {
+					case 1:
+						document.getElementById("lastMonthClosedTimeToAcceptFirstBulk").innerHTML ++;
+						break;
+					case 2:
+						document.getElementById("lastMonthClosedTimeToAcceptSecondBulk").innerHTML ++;
+						break;
+					case 3:
+						document.getElementById("lastMonthClosedTimeToAcceptThirdBulk").innerHTML ++;
+						break;
+					}
 		 		}
 			}
 		 }
@@ -1634,19 +1678,63 @@ span.psw {
 				TimeAnswer = (answer[m].agentParticipants[0].timeL - whatTime)/1000;
 				if (whatTime > tenMinutesAgo){
 					TotalTimeTenMinutesAgo = TotalTimeTenMinutesAgo + TimeAnswer;
-					numberTenMinutesAgo = numberTenMinutesAgo + 1; 
+					numberTenMinutesAgo = numberTenMinutesAgo + 1;
+					switch(findBulk(TimeAnswer)) {
+					case 1:
+						document.getElementById("last10OpenTimeToAcceptFirstBulk").innerHTML ++;
+						break;
+					case 2:
+						document.getElementById("last10OpenTimeToAcceptSecondBulk").innerHTML ++;
+						break;
+					case 3:
+						document.getElementById("last10OpenTimeToAcceptThirdBulk").innerHTML ++;
+						break;
+					}
 		 		}
 		 		else if (whatTime > oneHourAgo){
 					TotalTimeOneHourAgo = TotalTimeOneHourAgo + TimeAnswer;
 					numberOneHourAgo = numberOneHourAgo + 1;
+					switch(findBulk(TimeAnswer)) {
+					case 1:
+						document.getElementById("lastHourOpenTimeToAcceptFirstBulk").innerHTML ++;
+						break;
+					case 2:
+						document.getElementById("lastHourOpenTimeToAcceptSecondBulk").innerHTML ++;
+						break;
+					case 3:
+						document.getElementById("lastHourOpenTimeToAcceptThirdBulk").innerHTML ++;
+						break;
+					}
 		 		}
 		 		else if (whatTime > midnightToday){
 					TotalTimeOneDayAgo = TotalTimeOneDayAgo + TimeAnswer;
 					numberOneDayAgo = numberOneDayAgo + 1;
+					switch(findBulk(TimeAnswer)) {
+					case 1:
+						document.getElementById("lastDayOpenTimeToAcceptFirstBulk").innerHTML ++;
+						break;
+					case 2:
+						document.getElementById("lastDayOpenTimeToAcceptSecondBulk").innerHTML ++;
+						break;
+					case 3:
+						document.getElementById("lastDayOpenTimeToAcceptThirdBulk").innerHTML ++;
+						break;
+					}
 		 		}
 		 		else {
 					TotalTimeOneMonthAgo = TotalTimeOneMonthAgo + TimeAnswer;
 					numberOneMonthAgo = numberOneMonthAgo + 1;
+					switch(findBulk(TimeAnswer)) {
+					case 1:
+						document.getElementById("lastMonthOpenTimeToAcceptFirstBulk").innerHTML ++;
+						break;
+					case 2:
+						document.getElementById("lastMonthOpenTimeToAcceptSecondBulk").innerHTML ++;
+						break;
+					case 3:
+						document.getElementById("lastMonthOpenTimeToAcceptThirdBulk").innerHTML ++;
+						break;
+					}
 		 		}
 			}
 		 }
