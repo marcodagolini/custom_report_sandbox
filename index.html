@@ -1219,6 +1219,12 @@ span.psw {
 	 numberOneDayAgo = 0;
 	 numberOneMonthAgo = 0;
 	 for (var m = 0; m < length; m++){
+		 document.getElementById("last10FTAOpenFirstBulk").innerHTML = 0;
+		 document.getElementById("last10FTAOpenSecondBulk").innerHTML = 0;
+		 document.getElementById("last10FTAOpenThirdBulk").innerHTML = 0;
+		 document.getElementById("last10FTAOpenFirstBulk").innerHTML ++;
+		 document.getElementById("last10FTAOpenSecondBulk").innerHTML ++;
+		 document.getElementById("last10FTAOpenThirdBulk").innerHTML ++;
 		 TimeAnswer = 0;
 		 howManyMessages = answer[m].messageRecords.length;
 		 if(howManyMessages){
