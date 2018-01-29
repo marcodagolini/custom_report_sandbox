@@ -829,6 +829,9 @@ span.psw {
 	  numberConvs = 0;
 	  totalTime = 0;
 	  numberTotal = 0;
+	  document.getElementById("customTimeClosedTimeToAcceptFirstBulk").innerHTML = 0;
+	  document.getElementById("customTimeClosedTimeToAcceptSecondBulk").innerHTML = 0;
+	  document.getElementById("customTimeClosedTimeToAcceptThirdBulk").innerHTML = 0;
 	  for (var m = 0; m < length; m++){
 		 TimeAnswer = 0;
 		 howManyMessages = answer[m].messageRecords.length;
@@ -839,7 +842,18 @@ span.psw {
 					TimeAnswer = (answer[m].agentParticipants[0].timeL - whatTime)/1000;
 					if ((whatTime > customDate) && (whatTime < endCustomDate)){
 						totalTime = totalTime + TimeAnswer;
-						numberTotal = numberTotal + 1; 
+						numberTotal = numberTotal + 1;
+						switch(findBulk(TimeAnswer)) {
+							case 1:
+								document.getElementById("customTimeClosedTimeToAcceptFirstBulk").innerHTML ++;
+								break;
+							case 2:
+								document.getElementById("customTimeClosedTimeToAcceptSecondBulk").innerHTML ++;
+								break;
+							case 3:
+								document.getElementById("customTimeClosedTimeToAcceptThirdBulk").innerHTML ++;
+								break;
+						}
 		 			}
 				}
 		 	}
