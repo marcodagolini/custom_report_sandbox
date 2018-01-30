@@ -523,7 +523,14 @@ span.psw {
   }
   function percentage(a, b, c){
 	  var tot = a + b + c;
-	  var percent1 = a;
+	  var percent1 = Math.floor(100 * a/tot);
+	  var percent2 = Math.floor(100 * b/tot);
+	  var percent3 = 100 - percent1 - percent2;
+	  var percent1 = percent1 + '%';
+	  var percent2 = percent2 + '%';
+	  var percent3 = percent3 + '%';
+	  var response = [percent1, percent2, percent3];
+	  return response;
   }
   function secondsToString(timeInSeconds){
 						      
