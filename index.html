@@ -2236,7 +2236,7 @@ checklogin(accnumb, bearer);
 			    document.getElementById("reportMSG").innerHTML = "Please insert a correct end date!";
                             document.getElementById("reportMSG").style = "color : red"; 
 		    }
-		    else if (((end - start)/1000) > (60*60*24*31)){
+		    else if (((end - start)/1000) > (60*60*24*30)){
 			    document.getElementById("reportMSG").innerHTML = "No more than 30 days!";
                             document.getElementById("reportMSG").style = "color : red"; 
 		    }
