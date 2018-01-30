@@ -1403,10 +1403,10 @@ span.psw {
 		 }
 		 }
 	 }
-	 var percentage = percentage(document.getElementById("lastMonthFTAOpenFirstBulk").innerHTML, document.getElementById("lastMonthFTAOpenSecondBulk").innerHTML, document.getElementById("lastMonthFTAOpenThirdBulk").innerHTML);
-	 document.getElementById("lastMonthFTAOpenFirstBulk").innerHTML = percentage[1];
-	 document.getElementById("lastMonthFTAOpenSecondBulk").innerHTML = percentage[2];
-	 document.getElementById("lastMonthFTAOpenThirdBulk").innerHTML = percentage[3];
+	 var perc = percentage(document.getElementById("lastMonthFTAOpenFirstBulk").innerHTML, document.getElementById("lastMonthFTAOpenSecondBulk").innerHTML, document.getElementById("lastMonthFTAOpenThirdBulk").innerHTML);
+	 document.getElementById("lastMonthFTAOpenFirstBulk").innerHTML = perc[1];
+	 document.getElementById("lastMonthFTAOpenSecondBulk").innerHTML = perc[2];
+	 document.getElementById("lastMonthFTAOpenThirdBulk").innerHTML = perc[3];
 	 numberOneHourAgo = numberTenMinutesAgo + numberOneHourAgo;
 	 numberOneDayAgo = numberOneDayAgo + numberOneHourAgo;
 	 numberOneMonthAgo = numberOneMonthAgo + numberOneDayAgo;
