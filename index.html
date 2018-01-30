@@ -499,7 +499,7 @@ span.psw {
   var accountReadWrite = "";
   var timeZone = "";
   var skillNumber = -1;
-  var teamNumber = -1;
+  var teamNumber = 0;
   var skillArray = [];
   var teamArray = [];
   var uname;
@@ -2271,7 +2271,10 @@ checklogin(accnumb, bearer);
 	 else{
 		 body = '{"start":{"from":' + start + ',"to":' + end + '}, "status": ["OPEN"], "skillIds": ["' + skillNumber + '"]';
 	 }
-	 body = body + ' ,"agentGroupIds":["' + teamNumber + '"]}';
+	 if (teamNumber){
+		 body = body + ' ,"agentGroupIds":["' + teamNumber + '"]}';
+	 }
+	 
 	 console.log(body);
 	 console.log("(HISTORICAL) skill: " + skillNumber + " ***** team: " + teamNumber + " ***** start: " + start + " ***** end: " + end);
 	 function loadClosedConvs(body, offset, callback) {
@@ -2337,10 +2340,13 @@ checklogin(accnumb, bearer);
 					      if(skillNumber === -1){
 						     body = '{"start":{"from":' + start + ',"to":' + end + '}, "status": ["CLOSE"]';
 					      }
-					       else{
+					      else{
 						       body = '{"start":{"from":' + start + ',"to":' + end + '}, "status": ["CLOSE"], "skillIds": ["' + skillNumber + '"]';
-					       }
-					      body = body + ' ,"agentGroupIds":["' + teamNumber + '"]}';
+					      }
+					      if(teamNumber){
+						      body = body + ' ,"agentGroupIds":["' + teamNumber + '"]}';
+					      }
+					      
 					      console.log(body);
 					      loadClosedConvs(body, offset, callback);
 				      }
