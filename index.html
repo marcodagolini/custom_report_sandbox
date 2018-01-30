@@ -523,10 +523,13 @@ span.psw {
 	  }
   }
   function percentage(a, b, c){
-	  var tot = a + b + c;
+	  var a1 = parseInt(a);
+	  var b1 = parseInt(b);
+	  var c1 = parseInt(c);
+	  var tot = a1 + b1 + c1;
 	  if (tot){
-		  var percent1 = Math.floor(100 * a/tot);
-		  var percent2 = Math.floor(100 * b/tot);
+		  var percent1 = Math.floor(100 * a1/tot);
+		  var percent2 = Math.floor(100 * b1/tot);
 		  var percent3 = 100 - percent1 - percent2;
 		  var percent1 = percent1 + '%';
 		  var percent2 = percent2 + '%';
