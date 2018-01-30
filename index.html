@@ -889,6 +889,10 @@ span.psw {
 		 	}
 		 }
 	  }
+	  var perc = percentage(document.getElementById("customTimeClosedTimeToAcceptFirstBulk").innerHTML, document.getElementById("customTimeClosedTimeToAcceptSecondBulk").innerHTML, document.getElementById("customTimeClosedTimeToAcceptThirdBulk").innerHTML);
+	  document.getElementById("customTimeClosedTimeToAcceptFirstBulk").innerHTML = perc[0];
+	  document.getElementById("customTimeClosedTimeToAcceptSecondBulk").innerHTML = perc[1];
+	  document.getElementById("customTimeClosedTimeToAcceptThirdBulk").innerHTML = perc[2];
 	  document.getElementById("customTimeClosedTimeToAccept").innerHTML = secondsToString(totalTime/numberTotal);
 	  numberConvs = 0;
 	  totalTime = 0;
@@ -923,6 +927,10 @@ span.psw {
 		 	}
 		 }
 	  }
+	  var perc = percentage(document.getElementById("customTimeOpenTimeToAcceptFirstBulk").innerHTML, document.getElementById("customTimeOpenTimeToAcceptSecondBulk").innerHTML, document.getElementById("customTimeOpenTimeToAcceptThirdBulk").innerHTML);
+	  document.getElementById("customTimeOpenTimeToAcceptFirstBulk").innerHTML = perc[0];
+	  document.getElementById("customTimeOpenTimeToAcceptSecondBulk").innerHTML = perc[1];
+	  document.getElementById("customTimeOpenTimeToAcceptThirdBulk").innerHTML = perc[2];
 	  document.getElementById("customTimeOpenTimeToAccept").innerHTML = secondsToString(totalTime/numberTotal);
 	  numberConvs = 0;
 	  totalTime = 0;
@@ -964,6 +972,10 @@ span.psw {
 		 }
 		 
 	  }
+	  var perc = percentage(document.getElementById("customTimeFTAOpenFirstBulk").innerHTML, document.getElementById("customTimeFTAOpenSecondBulk").innerHTML, document.getElementById("customTimeFTAOpenThirdBulk").innerHTML);
+	  document.getElementById("customTimeFTAOpenFirstBulk").innerHTML = perc[0];
+	  document.getElementById("customTimeFTAOpenSecondBulk").innerHTML = perc[1];
+	  document.getElementById("customTimeFTAOpenThirdBulk").innerHTML = perc[2];
 	  document.getElementById("customTimeFTAOpen").innerHTML = secondsToString(totalTime/numberTotal);
 	  numberConvs = 0;
 	  totalTime = 0;
@@ -1005,6 +1017,10 @@ span.psw {
 		 }
 		 
 	  }
+	  var perc = percentage(document.getElementById("customTimeFTAClosedFirstBulk").innerHTML, document.getElementById("customTimeFTAClosedSecondBulk").innerHTML, document.getElementById("customTimeFTAClosedThirdBulk").innerHTML);
+	  document.getElementById("customTimeFTAClosedFirstBulk").innerHTML = perc[0];
+	  document.getElementById("customTimeFTAClosedSecondBulk").innerHTML = perc[1];
+	  document.getElementById("customTimeFTAClosedThirdBulk").innerHTML = perc[2];
 	  document.getElementById("customTimeFTAClosed").innerHTML = secondsToString(totalTime/numberTotal);
 	  numberConvs = 0;
 	  totalTime = 0;
