@@ -1808,6 +1808,22 @@ span.psw {
 		 }
 		 }
 	 }
+	 var perc = percentage(document.getElementById("lastMonthClosedTimeToAcceptFirstBulk").innerHTML, document.getElementById("lastMonthClosedTimeToAcceptSecondBulk").innerHTML, document.getElementById("lastMonthClosedTimeToAcceptThirdBulk").innerHTML);
+	 document.getElementById("lastMonthClosedTimeToAcceptFirstBulk").innerHTML = perc[0];
+	 document.getElementById("lastMonthClosedTimeToAcceptSecondBulk").innerHTML = perc[1];
+	 document.getElementById("lastMonthClosedTimeToAcceptThirdBulk").innerHTML = perc[2];
+	 perc = percentage(document.getElementById("lastDayClosedTimeToAcceptFirstBulk").innerHTML, document.getElementById("lastDayClosedTimeToAcceptSecondBulk").innerHTML, document.getElementById("lastDayClosedTimeToAcceptThirdBulk").innerHTML);
+	 document.getElementById("lastDayClosedTimeToAcceptFirstBulk").innerHTML = perc[0];
+	 document.getElementById("lastDayClosedTimeToAcceptSecondBulk").innerHTML = perc[1];
+	 document.getElementById("lastDayClosedTimeToAcceptThirdBulk").innerHTML = perc[2];
+	 perc = percentage(document.getElementById("lastHourClosedTimeToAcceptFirstBulk").innerHTML, document.getElementById("lastHourClosedTimeToAcceptSecondBulk").innerHTML, document.getElementById("lastHourClosedTimeToAcceptThirdBulk").innerHTML);
+	 document.getElementById("lastHourClosedTimeToAcceptFirstBulk").innerHTML = perc[0];
+	 document.getElementById("lastHourClosedTimeToAcceptSecondBulk").innerHTML = perc[1];
+	 document.getElementById("lastHourClosedTimeToAcceptThirdBulk").innerHTML = perc[2];
+	 perc = percentage(document.getElementById("last10ClosedTimeToAcceptFirstBulk").innerHTML, document.getElementById("last10ClosedTimeToAcceptSecondBulk").innerHTML, document.getElementById("last10ClosedTimeToAcceptThirdBulk").innerHTML);
+	 document.getElementById("last10ClosedTimeToAcceptFirstBulk").innerHTML = perc[0];
+	 document.getElementById("last10ClosedTimeToAcceptSecondBulk").innerHTML = perc[1];
+	 document.getElementById("last10ClosedTimeToAcceptThirdBulk").innerHTML = perc[2];
 	 numberOneHourAgo = numberTenMinutesAgo + numberOneHourAgo;
 	 numberOneDayAgo = numberOneDayAgo + numberOneHourAgo;
 	 numberOneMonthAgo = numberOneMonthAgo + numberOneDayAgo;
@@ -1929,6 +1945,22 @@ span.psw {
 		 }
 		 }
 	 }
+	 var perc = percentage(document.getElementById("lastMonthOpenTimeToAcceptFirstBulk").innerHTML, document.getElementById("lastMonthOpenTimeToAcceptSecondBulk").innerHTML, document.getElementById("lastMonthOpenTimeToAcceptThirdBulk").innerHTML);
+	 document.getElementById("lastMonthOpenTimeToAcceptFirstBulk").innerHTML = perc[0];
+	 document.getElementById("lastMonthOpenTimeToAcceptSecondBulk").innerHTML = perc[1];
+	 document.getElementById("lastMonthOpenTimeToAcceptThirdBulk").innerHTML = perc[2];
+	 perc = percentage(document.getElementById("lastDayOpenTimeToAcceptFirstBulk").innerHTML, document.getElementById("lastDayOpenTimeToAcceptSecondBulk").innerHTML, document.getElementById("lastDayOpenTimeToAcceptThirdBulk").innerHTML);
+	 document.getElementById("lastDayOpenTimeToAcceptFirstBulk").innerHTML = perc[0];
+	 document.getElementById("lastDayOpenTimeToAcceptSecondBulk").innerHTML = perc[1];
+	 document.getElementById("lastDayOpenTimeToAcceptThirdBulk").innerHTML = perc[2];
+	 perc = percentage(document.getElementById("lastHourOpenTimeToAcceptFirstBulk").innerHTML, document.getElementById("lastHourOpenTimeToAcceptSecondBulk").innerHTML, document.getElementById("lastHourOpenTimeToAcceptThirdBulk").innerHTML);
+	 document.getElementById("lastHourOpenTimeToAcceptFirstBulk").innerHTML = perc[0];
+	 document.getElementById("lastHourOpenTimeToAcceptSecondBulk").innerHTML = perc[1];
+	 document.getElementById("lastHourOpenTimeToAcceptThirdBulk").innerHTML = perc[2];
+	 perc = percentage(document.getElementById("last10OpenTimeToAcceptFirstBulk").innerHTML, document.getElementById("last10OpenTimeToAcceptSecondBulk").innerHTML, document.getElementById("last10OpenTimeToAcceptThirdBulk").innerHTML);
+	 document.getElementById("last10OpenTimeToAcceptFirstBulk").innerHTML = perc[0];
+	 document.getElementById("last10OpenTimeToAcceptSecondBulk").innerHTML = perc[1];
+	 document.getElementById("last10OpenTimeToAcceptThirdBulk").innerHTML = perc[2];
 	 numberOneHourAgo = numberTenMinutesAgo + numberOneHourAgo;
 	 numberOneDayAgo = numberOneDayAgo + numberOneHourAgo;
 	 numberOneMonthAgo = numberOneMonthAgo + numberOneDayAgo;
