@@ -1566,6 +1566,22 @@ span.psw {
 		 }
 		 }
 	 }
+	 var perc = percentage(document.getElementById("lastMonthFTAClosedFirstBulk").innerHTML, document.getElementById("lastMonthFTAClosedSecondBulk").innerHTML, document.getElementById("lastMonthFTAClosedThirdBulk").innerHTML);
+	 document.getElementById("lastMonthFTAClosedFirstBulk").innerHTML = perc[0];
+	 document.getElementById("lastMonthFTAClosedSecondBulk").innerHTML = perc[1];
+	 document.getElementById("lastMonthFTAClosedThirdBulk").innerHTML = perc[2];
+	 perc = percentage(document.getElementById("lastDayFTAClosedFirstBulk").innerHTML, document.getElementById("lastDayFTAClosedSecondBulk").innerHTML, document.getElementById("lastDayFTAClosedThirdBulk").innerHTML);
+	 document.getElementById("lastDayFTAClosedFirstBulk").innerHTML = perc[0];
+	 document.getElementById("lastDayFTAClosedSecondBulk").innerHTML = perc[1];
+	 document.getElementById("lastDayFTAClosedThirdBulk").innerHTML = perc[2];
+	 perc = percentage(document.getElementById("lastHourFTAClosedFirstBulk").innerHTML, document.getElementById("lastHourFTAClosedSecondBulk").innerHTML, document.getElementById("lastHourFTAClosedThirdBulk").innerHTML);
+	 document.getElementById("lastHourFTAClosedFirstBulk").innerHTML = perc[0];
+	 document.getElementById("lastHourFTAClosedSecondBulk").innerHTML = perc[1];
+	 document.getElementById("lastHourFTAClosedThirdBulk").innerHTML = perc[2];
+	 perc = percentage(document.getElementById("last10FTAClosedFirstBulk").innerHTML, document.getElementById("last10FTAClosedSecondBulk").innerHTML, document.getElementById("last10FTAClosedThirdBulk").innerHTML);
+	 document.getElementById("last10FTAClosedFirstBulk").innerHTML = perc[0];
+	 document.getElementById("last10FTAClosedSecondBulk").innerHTML = perc[1];
+	 document.getElementById("last10FTAClosedThirdBulk").innerHTML = perc[2];
 	 numberOneHourAgo = numberTenMinutesAgo + numberOneHourAgo;
 	 numberOneDayAgo = numberOneDayAgo + numberOneHourAgo;
 	 numberOneMonthAgo = numberOneMonthAgo + numberOneDayAgo;
