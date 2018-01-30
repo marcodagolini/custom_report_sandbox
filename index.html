@@ -725,7 +725,7 @@ span.psw {
 			  "If-Match": "-1",
 			  success: function success(data) {
 				  teamArray = data;
-				  var appendTeam = '<select name="teamSelector" id="teamName">';
+				  var appendTeam = '<select name="teamSelector" id="teamName"><option>All</option>';
 				  var toAppend = '';
 				  var length = data.length;
 				  for (var m = 0; m < length; m++){
