@@ -2274,6 +2274,9 @@ checklogin(accnumb, bearer);
 	 if (teamNumber){
 		 body = body + ' ,"agentGroupIds":["' + teamNumber + '"]}';
 	 }
+	 else{
+		 body = body + '}';
+	 }
 	 
 	 console.log(body);
 	 console.log("(HISTORICAL) skill: " + skillNumber + " ***** team: " + teamNumber + " ***** start: " + start + " ***** end: " + end);
@@ -2346,7 +2349,9 @@ checklogin(accnumb, bearer);
 					      if(teamNumber){
 						      body = body + ' ,"agentGroupIds":["' + teamNumber + '"]}';
 					      }
-					      
+					      else{
+						      body = body + '}';
+					      }
 					      console.log(body);
 					      loadClosedConvs(body, offset, callback);
 				      }
