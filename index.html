@@ -609,9 +609,8 @@ span.psw {
                               data: body,
                               success: function success(data) {
 				      if((data._metadata.count) > 0){
-					      var length = data length;
+					      var length = data.length;
 					      for (var m = 0; m < length; m++){
-						      console.log((data.conversationHistoryRecords[m].info.latestSkillName));
 						      if((data.conversationHistoryRecords[m].info.latestSkillName) === "Limbo"){
 							      howManyLimbo = howManyLimbo +1;
 						      }	      
