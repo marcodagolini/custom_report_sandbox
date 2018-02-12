@@ -609,7 +609,7 @@ span.psw {
                               data: body,
                               success: function success(data) {
 				      
-				      	document.getElementById("limbo").innerHTML = data.conversationHistoryRecords.length;
+				      	document.getElementById("limbo").innerHTML = data._metadata.count;
 				      
 				      }
 				      
@@ -622,12 +622,6 @@ span.psw {
                               beforeSend: function(xhr, settings) { xhr.setRequestHeader('Authorization','Bearer ' + bearer); }
 		});
 	 }
-	 
-	 
-	
-	 loadOpenConvs(body, offset, function(err, resp) {
-		 // Your code here...
-	 }); 
 	  
   }
 	
