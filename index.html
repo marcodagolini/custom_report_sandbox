@@ -597,7 +597,7 @@ span.psw {
   function loadLimboBar(){
 	  
 	 var howManyLimbo = 0; 
-	 var body = body = '{"start":{"from":' + (Date.now() - (1000*60*60*24*30)) + ',"to":' + (Date.now()) + '}, "status": ["OPEN"], "skillsIds":["1051213232"]}';
+	 var body = body = '{"start":{"from":' + (Date.now() - (1000*60*60*24*30)) + ',"to":' + (Date.now()) + '}, "status": ["OPEN"]}';
 	 var offset = 0;
 	  
 	 $.ajax({
@@ -609,8 +609,8 @@ span.psw {
                               contentType: "application/json",
                               data: body,
                               success: function success(data) {
-				      for (var m = 0; m < length; m++){
-					      if(data._metadata.count){
+				      if(data._metadata.count){
+					      for (var m = 0; m < length; m++){
 						      if(data.conversationHistoryRecords[0].info.latestSkillId === "1051213232"){
 							      howManyLimbo = howManyLimbo +1;
 						      }	      
