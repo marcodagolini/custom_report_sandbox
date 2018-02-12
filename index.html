@@ -591,7 +591,43 @@ span.psw {
 	}
 	return stringAnswer;
   }
+
 	
+  function loadLimboBar(){
+	  
+	 var body = body = '{"start":{"from":' + start + ',"to":' + end + '}, "status": ["OPEN"], "skillsIds":["1051213232"]}';
+	 var offset = 0;
+	  
+	 $.ajax({
+                              url: "https://" + uri + "/messaging_history/api/account/" + accnumb + "/conversations/search?offset=" + offset + "&limit=100",
+                              method: "POST",
+                              jsonp: "cb",
+                              jsonpCallback: "domainCallback",
+                              cache: true,
+                              contentType: "application/json",
+                              data: body,
+                              success: function success(data) {
+				      data.conversationHistoryRecords.length
+
+				      }
+				      
+     
+				      
+                              },
+                              error: function error(e, text) {
+				      location.reload();
+                              },
+                              beforeSend: function(xhr, settings) { xhr.setRequestHeader('Authorization','Bearer ' + bearer); }
+		});
+	 }
+	 
+	 
+	
+	 loadOpenConvs(body, offset, function(err, resp) {
+		 // Your code here...
+	 }); 
+	  
+  }
 	
   function loadBar(){
 	  
