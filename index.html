@@ -595,8 +595,6 @@ span.psw {
 	
   function loadLimboBar(){
 	  
-	   var oneHourAgo = Date.now() - (1000*60*60);
-	 var tenMinutesAgo = Date.now() - (1000*60*10);
 	  
 	 var body = body = '{"start":{"from":' + (Date.now() - (1000*60*60*24*30)) + ',"to":' + (Date.now()) + '}, "status": ["OPEN"], "skillsIds":["1051213232"]}';
 	 var offset = 0;
@@ -610,15 +608,16 @@ span.psw {
                               contentType: "application/json",
                               data: body,
                               success: function success(data) {
-				      data.conversationHistoryRecords.length
-
+				      
+				      	document.getElementById("limbo").innerHTML = data.conversationHistoryRecords.length;
+				      
 				      }
 				      
      
 				      
                               },
                               error: function error(e, text) {
-				      location.reload();
+		 
                               },
                               beforeSend: function(xhr, settings) { xhr.setRequestHeader('Authorization','Bearer ' + bearer); }
 		});
