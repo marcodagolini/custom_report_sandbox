@@ -8,8 +8,6 @@
 
 
 
-
-
 <head>
   
 </head>
@@ -212,7 +210,7 @@ span.psw {
     <div class="bar-container">
   	<div class="bar-item">open</div>
   	<div class="bar-item">pending</div>
-  	<div class="bar-item">unassigned</div>  
+  	<div class="bar-item">unassigned</div>
   	<div class="bar-item">overdue</div>
   	<div class="bar-item">soon overdue</div>
   	<div id="open" class="bar-item"></div>  
@@ -498,7 +496,7 @@ span.psw {
   var facadeUri = "";
   var accountReadWrite = "";
   var timeZone = "";
-  var skillNumber = -1;
+  var skillNumber = "-1";
   var teamNumber = 0;
   var skillArray = [];
   var teamArray = [];
@@ -510,6 +508,7 @@ span.psw {
   var statisticOptions = 0;
   var customDate;
   var endCustomDate;
+  var overwriteHumanSkill = "";
 	
   function findBulk(Seconds){
 	 if (Seconds <= 30){
@@ -522,6 +521,8 @@ span.psw {
 		return 3;  
 	  }
   }
+	
+	
   function percentage(a, b, c){
 	  var a1 = parseInt(a);
 	  var b1 = parseInt(b);
@@ -544,15 +545,15 @@ span.psw {
 		  var response = [percent1, percent2, percent3];
 		  return response;
 	  }
-	  
-	  
-	  
-	  
-	  
-	  
-	  
+	    
 	  
   }
+	
+  function refreshDates(){
+	  
+  }
+	
+	
   function secondsToString(timeInSeconds){
 						      
 	var hours;
@@ -666,11 +667,25 @@ span.psw {
 						skillArray = data;
 						var appendSkill = '<select name="skillSelector" id="skillName"><option>All</option>';
 						var toAppend = '';
+						var newHuman = '';
+						var toAppendHuman = '';
 						var length = data.length;
 						for (var m = 0; m < length; m++){
-							toAppend = '<option>' + data[m].name + '</option>';
-							appendSkill = appendSkill.concat(toAppend);
+							if(!data[m].name.startsWith("***")){
+								toAppend = '<option>' + data[m].name + '</option>';
+								appendSkill = appendSkill.concat(toAppend);
+							}
+							else{
+								toAppendHuman = '","' + data[m].id;
+								newHuman = newHuman.concat(toAppendHuman);
+							}
 						}
+						console.log("*****");
+						console.log("*****");
+						console.log(newHuman);
+						console.log("*****");
+						console.log("*****");
+						overwriteHumanSkill = newHuman;
 						appendSkill = appendSkill.concat('</select>');
 						$("#skill").append(appendSkill);
 						$('#customDate').val($('#startdate').val());
@@ -698,9 +713,9 @@ span.psw {
 						d = new Date(thisDate);
 						endCustomDate = d.getTime();
 						
-						$('#customDate').on('change', function() {
+						$('#customDate,#customHour').on('change', function() {
 							
-							var thisDate = $('#customDate,#customHour').val();
+							var thisDate = $('#customDate').val();
 							thisDate = new Date(thisDate);
 							var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 							var year = thisDate.getFullYear();
@@ -1346,7 +1361,6 @@ span.psw {
 	 document.getElementById("lastMonthFTAOpenSecondBulk").innerHTML = 0;
 	 document.getElementById("lastMonthFTAOpenThirdBulk").innerHTML = 0;
 	 for (var m = 0; m < length; m++){
-
 		 TimeAnswer = 0;
 		 howManyMessages = answer[m].messageRecords.length;
 		 if(howManyMessages){
@@ -2065,6 +2079,10 @@ span.psw {
 	
 	
 checklogin(accnumb, bearer);
+	
+setInterval(function(){
+	loadBar();
+}, 30000);
   
 	
 	
@@ -2083,12 +2101,17 @@ checklogin(accnumb, bearer);
 		  var length = skillArray.length;
 		  for (var m = 0; m < length; m++){
 			  if(skillArray[m].name === $("#skillName").val()){
-				  skillNumber = skillArray[m].id;
-				  isChanged = 1;
+				  if(skillArray[m].name === "human"){
+					  skillNumber = skillArray[m].id + overwriteHumanSkill;
+					  isChanged = 1;
+				  }else{
+				  	skillNumber = skillArray[m].id;
+				  	isChanged = 1;
+				  }
 			  }
 		  }
 		  if (!isChanged){
-			  skillNumber = -1;
+			  skillNumber = "-1";
 		  }
 		  length = teamArray.length;
 		  for (var m = 0; m < length; m++){
@@ -2097,11 +2120,7 @@ checklogin(accnumb, bearer);
 				  console.log("teamNumber="+teamNumber);
 			  }
 		  }
-		  if((endCustomDate > Date.now())){
-			  document.getElementById("refreshMSG").innerHTML = "Please do not insert a future date!";
-			  document.getElementById("refreshMSG").style = "color : red";					  
-		  }
-		  else if (customDate < (Date.now() - (1000*60*60*24*30))){
+		  if (customDate < (Date.now() - (1000*60*60*24*30))){
 			  document.getElementById("refreshMSG").innerHTML = "Please do a query related to the last 30 days!";
 			  document.getElementById("refreshMSG").style = "color : red";
 		  }
@@ -2376,11 +2395,12 @@ checklogin(accnumb, bearer);
 	 var offset = 0;
 	 var body = "";
 	 var answer = [];
-	 if(skillNumber === -1){
+	 if(skillNumber === "-1"){
 		 body = '{"start":{"from":' + start + ',"to":' + end + '}, "status": ["OPEN"]';
 	 }
 	 else{
-		 body = '{"start":{"from":' + start + ',"to":' + end + '}, "status": ["OPEN"], "skillIds": ["' + skillNumber + '"]';
+		 body = '{"start":{"from":' + start + ',"to":' + end + '}, "status": ["OPEN"], "skillIds": ["' + skillNumber + overwriteHumanSkill + '"]';
+		 console.log(body);
 	 }
 	 if (teamNumber){
 		 body = body + ' ,"agentGroupIds":["' + teamNumber + '"]}';
@@ -2451,11 +2471,12 @@ checklogin(accnumb, bearer);
 				      else{
 					      answer = answer.concat(data.conversationHistoryRecords);
 					      offset = 0;
-					      if(skillNumber === -1){
+					      if(skillNumber === "-1"){
 						     body = '{"start":{"from":' + start + ',"to":' + end + '}, "status": ["CLOSE"]';
 					      }
 					      else{
-						       body = '{"start":{"from":' + start + ',"to":' + end + '}, "status": ["CLOSE"], "skillIds": ["' + skillNumber + '"]';
+						       body = '{"start":{"from":' + start + ',"to":' + end + '}, "status": ["CLOSE"], "skillIds": ["' + skillNumber + overwriteHumanSkill + '"]';
+						      console.log(body);
 					      }
 					      if(teamNumber){
 						      body = body + ' ,"agentGroupIds":["' + teamNumber + '"]}';
@@ -2564,7 +2585,20 @@ checklogin(accnumb, bearer);
 							      endReason = "IN_PROGRESS";
 						      }
 						      else{
-							      endReason = answer[i].info.closeReason;
+							      if(answer[i].info.closeReason === "AGENT"){
+								      var a = (answer[i].agentParticipants.length - 1);
+								      if(typeof answer[i].agentParticipants[0] !== 'undefined'){
+									      if((answer[i].agentParticipants[a].agentLoginName === "botLivePerson") && (answer[i].agentParticipants[a].permission === "ASSIGNED_AGENT")){
+										      console.log(answer[i].agentParticipants[a].agentLoginName);
+										      endReason = "AUTO_CLOSURE";
+									      }else{
+										      endReason = answer[i].info.closeReason;
+									      }
+								      }
+								      
+							      }else{
+								      endReason = answer[i].info.closeReason;
+							      }
 						      }
 						      
 						      
@@ -2593,13 +2627,49 @@ checklogin(accnumb, bearer);
 							      }
 						      }
 						      var phoneNumber = "";
+						      var imeiNumber = "";
+						      var customerName = "";
 						      if(answer[i].hasOwnProperty('sdes')){
 							      if(answer[i].sdes.events[0].hasOwnProperty('customerInfo')){
-								      phoneNumber = answer[i].sdes.events[0].customerInfo.customerInfo.imei;
+								      imeiNumber = answer[i].sdes.events[0].customerInfo.customerInfo.imei;
 							      }
-							      else if(answer[i].sdes.events[0].hasOwnProperty('personalInfo')){
+							      if(answer[i].sdes.events[1].hasOwnProperty('customerInfo')){
+								      imeiNumber = answer[i].sdes.events[1].customerInfo.customerInfo.imei;
+							      }
+							      if(answer[i].sdes.events[0].hasOwnProperty('personalInfo')){
 								      if(answer[i].sdes.events[0].personalInfo.personalInfo.contacts.length){
 									      phoneNumber = answer[i].sdes.events[0].personalInfo.personalInfo.contacts[0].personalContact.phone;
+									      if(answer[i].sdes.events[0].personalInfo.personalInfo.hasOwnProperty('name')){
+										      var sdesName = answer[i].sdes.events[0].personalInfo.personalInfo.name;
+									      }
+									      else{
+										      var sdesName = "";
+									      }
+									      if(answer[i].sdes.events[0].personalInfo.personalInfo.hasOwnProperty('surname')){
+										      var sdesSurname = answer[i].sdes.events[0].personalInfo.personalInfo.surname;
+									      }
+									      else{
+										      var sdesSurname = "";
+									      }
+									      customerName = sdesName + " " + sdesSurname;
+								      }
+							      }
+							      if(answer[i].sdes.events[1].hasOwnProperty('personalInfo')){
+								      if(answer[i].sdes.events[1].personalInfo.personalInfo.contacts.length){
+									      phoneNumber = answer[i].sdes.events[1].personalInfo.personalInfo.contacts[0].personalContact.phone;
+									      if(answer[i].sdes.events[1].personalInfo.personalInfo.hasOwnProperty('name')){
+										      var sdesName = answer[i].sdes.events[1].personalInfo.personalInfo.name;
+									      }
+									      else{
+										      var sdesName = "";
+									      }
+									      if(answer[i].sdes.events[1].personalInfo.personalInfo.hasOwnProperty('surname')){
+										      var sdesSurname = answer[i].sdes.events[1].personalInfo.personalInfo.surname;
+									      }
+									      else{
+										      var sdesSurname = "";
+									      }
+									      customerName = sdesName + " " + sdesSurname;
 								      }
 							      }
 						      }
@@ -2627,9 +2697,12 @@ checklogin(accnumb, bearer);
 							      }
 						      }
 						      
+						      var startDateEngagement = new Date(answer[i].info.startTimeL);
+						      var endDateEngagement = new Date(answer[i].info.endTimeL);
+						      
       
 						      
-						      var pieceToAdd = {"start": answer[i].info.startTime,"end": answer[i].info.endTime,"agent": answer[i].info.latestAgentNickname,"team": answer[i].info.latestAgentGroupName,"endReason": endReason,"timeToAccept": timeToAccept,"firstTimeAnswer": firstTimeAnswer,"phoneNumber": phoneNumber,"conversation": answer[i].info.conversationId,"transcript": messages};
+						      var pieceToAdd = {"start": startDateEngagement,"end": endDateEngagement,"agent": answer[i].info.latestAgentLoginName,"team": answer[i].info.latestAgentGroupName,"endReason": endReason,"timeToAccept": timeToAccept,"firstTimeAnswer": firstTimeAnswer,"customerName": customerName,"phoneNumber": phoneNumber,"imeiNumber": imeiNumber,"conversation": answer[i].info.conversationId,"transcript": messages};
 						      exportObject = exportObject.concat(pieceToAdd);
 					      }
 				      	      console.log(exportObject);
@@ -2667,7 +2740,9 @@ checklogin(accnumb, bearer);
 			"endReason": "String",
 			"timeToAccept": "String",
 			"firstTimeAnswer": "String",
+			"customerName": "String",
 			"phoneNumber": "String",
+			"imeiNumber": "String",
     			"conversation": "String",
     			"transcript": "String"
 		 };
