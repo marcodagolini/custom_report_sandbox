@@ -2660,7 +2660,7 @@ checklogin(accnumb, bearer);
 					      document.getElementById("loaderMSG").innerHTML = "...downloading sessions:" + Math.round(100*(offset/data._metadata.count)) + "% completed...";
 					      document.getElementById("loaderMSG").style = "color : green";
 					      console.log ("adding conversations...");
-					      loadClosedConvs1(body, 100, callback);
+					      loadClosedConvs1(body, 100, callback1);
 				      }
 				      else{
 					      console.log(answer.length);
@@ -2717,7 +2717,7 @@ checklogin(accnumb, bearer);
 						      body = body + '}';
 					      }
 					      console.log(body);
-					      loadClosedConvs(body, offset, callback);
+					      loadClosedConvs(body, offset);
 				      }
 				      
      
