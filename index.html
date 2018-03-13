@@ -2502,6 +2502,9 @@ checklogin(accnumb, bearer);
 	 var offset = 0;
 	 var body = "";
 	 var answer = [];
+	 var finish1 = 0;
+	 var finish2 = 0;
+	 var finish3 = 0;
 	 if(skillNumber === "-1"){
 		 body = '{"start":{"from":' + start + ',"to":' + end + '}, "status": ["OPEN"]';
 	 }
@@ -2518,7 +2521,130 @@ checklogin(accnumb, bearer);
 	 
 	 console.log(body);
 	 console.log("(HISTORICAL) skill: " + skillNumber + " ***** team: " + teamNumber + " ***** start: " + start + " ***** end: " + end);
-	 function loadClosedConvs(body, offset, callback) {
+
+	 function loadClosedConvs1(body, offset1, callback) {
+	 
+	 	$.ajax({
+                              url: "https://" + uri + "/messaging_history/api/account/" + accnumb + "/conversations/search?offset=" + offset1 + "&limit=100&sort=start:desc",
+                              method: "POST",
+                              jsonp: "cb",
+                              jsonpCallback: "domainCallback",
+                              cache: true,
+                              contentType: "application/json",
+                              data: body,
+                              success: function success(data) {
+				      if((data.conversationHistoryRecords.length) == 100){
+					      offset1 = offset1 + 300;
+					      answer = answer.concat(data.conversationHistoryRecords);
+					      document.getElementById("loaderMSG").innerHTML = "...downloading sessions:" + Math.round(100*(offset1/data._metadata.count)) + "% completed...";
+					      document.getElementById("loaderMSG").style = "color : green";
+					      console.log ("adding conversations...");
+					      loadClosedConvs1(body, offset, callback);
+				      }
+				      else{
+					      finish1 = 1;
+					      if (finish2 && finish3){
+						      console.log(answer.length);
+						      answer = answer.concat(data.conversationHistoryRecords);
+						      console.log(answer.length);
+						      loadCustomStats(answer);
+						      loadStats(answer);
+					      
+					      }
+				      }
+				      
+     
+				      
+                              },
+                              error: function error(e, text) {
+				      location.reload();
+                              },
+                              beforeSend: function(xhr, settings) { xhr.setRequestHeader('Authorization','Bearer ' + bearer); }
+		});
+	 }	 
+	 
+
+	 
+	 function loadClosedConvs2(body, offset2, callback) {
+	 
+	 	$.ajax({
+                              url: "https://" + uri + "/messaging_history/api/account/" + accnumb + "/conversations/search?offset=" + offset2 + "&limit=100&sort=start:desc",
+                              method: "POST",
+                              jsonp: "cb",
+                              jsonpCallback: "domainCallback",
+                              cache: true,
+                              contentType: "application/json",
+                              data: body,
+                              success: function success(data) {
+				      if((data.conversationHistoryRecords.length) == 100){
+					      offset2 = offset2 + 300;
+					      answer = answer.concat(data.conversationHistoryRecords);
+					      loadClosedConvs2(body, offset, callback);
+				      }
+				      else{
+					      finish2 = 1;
+					      if (finish1 && finish3){
+						      console.log(answer.length);
+						      answer = answer.concat(data.conversationHistoryRecords);
+						      console.log(answer.length);
+						      loadCustomStats(answer);
+						      loadStats(answer);
+					      
+					      }
+				      }
+				      
+     
+				      
+                              },
+                              error: function error(e, text) {
+				      location.reload();
+                              },
+                              beforeSend: function(xhr, settings) { xhr.setRequestHeader('Authorization','Bearer ' + bearer); }
+		});
+	 }	 	 
+	 
+	 
+	 
+	 function loadClosedConvs3(body, offset3, callback) {
+	 
+	 	$.ajax({
+                              url: "https://" + uri + "/messaging_history/api/account/" + accnumb + "/conversations/search?offset=" + offset3 + "&limit=100&sort=start:desc",
+                              method: "POST",
+                              jsonp: "cb",
+                              jsonpCallback: "domainCallback",
+                              cache: true,
+                              contentType: "application/json",
+                              data: body,
+                              success: function success(data) {
+				      if((data.conversationHistoryRecords.length) == 100){
+					      offset3 = offset3 + 300;
+					      answer = answer.concat(data.conversationHistoryRecords);
+					      loadClosedConvs2(body, offset, callback);
+				      }
+				      else{
+					      finish3 = 1;
+					      if (finish1 && finish2){
+						      console.log(answer.length);
+						      answer = answer.concat(data.conversationHistoryRecords);
+						      console.log(answer.length);
+						      loadCustomStats(answer);
+						      loadStats(answer);
+					      }
+				      }
+				      
+     
+				      
+                              },
+                              error: function error(e, text) {
+				      location.reload();
+                              },
+                              beforeSend: function(xhr, settings) { xhr.setRequestHeader('Authorization','Bearer ' + bearer); }
+		});
+	 }	 	 
+	 
+	 
+	 
+	 function loadClosedConvs(body, offset) {
 	 
 	 	$.ajax({
                               url: "https://" + uri + "/messaging_history/api/account/" + accnumb + "/conversations/search?offset=" + offset + "&limit=100&sort=start:desc",
@@ -2530,12 +2656,11 @@ checklogin(accnumb, bearer);
                               data: body,
                               success: function success(data) {
 				      if((data.conversationHistoryRecords.length) == 100){
-					      offset = offset + 100;
 					      answer = answer.concat(data.conversationHistoryRecords);
 					      document.getElementById("loaderMSG").innerHTML = "...downloading sessions:" + Math.round(100*(offset/data._metadata.count)) + "% completed...";
 					      document.getElementById("loaderMSG").style = "color : green";
 					      console.log ("adding conversations...");
-					      loadClosedConvs(body, offset, callback);
+					      loadClosedConvs1(body, 100, callback);
 				      }
 				      else{
 					      console.log(answer.length);
