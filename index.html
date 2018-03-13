@@ -2544,6 +2544,7 @@ checklogin(accnumb, bearer);
 				      else{
 					      finish1 = 1;
 					      if (finish2 && finish3){
+						      console.log("offset1: " + offset1);
 						      console.log(answer.length);
 						      answer = answer.concat(data.conversationHistoryRecords);
 						      console.log(answer.length);
@@ -2584,6 +2585,7 @@ checklogin(accnumb, bearer);
 				      else{
 					      finish2 = 1;
 					      if (finish1 && finish3){
+						      console.log("offset2: " + offset2);
 						      console.log(answer.length);
 						      answer = answer.concat(data.conversationHistoryRecords);
 						      console.log(answer.length);
@@ -2617,6 +2619,7 @@ checklogin(accnumb, bearer);
                               data: body,
                               success: function success(data) {
 				      if((data.conversationHistoryRecords.length) == 100){
+					      console.log("offset3: " + offset3);
 					      offset3 = offset3 + 300;
 					      answer = answer.concat(data.conversationHistoryRecords);
 					      loadClosedConvs2(body, offset, callback);
