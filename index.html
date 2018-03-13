@@ -2521,7 +2521,7 @@ checklogin(accnumb, bearer);
 	 console.log(body);
 	 console.log("(HISTORICAL) skill: " + skillNumber + " ***** team: " + teamNumber + " ***** start: " + start + " ***** end: " + end);
 
-	 function loadClosedConvs1(body, offset1, callback) {
+	 function loadClosedConvs1(body, offset1, callback1) {
 	 
 	 	$.ajax({
                               url: "https://" + uri + "/messaging_history/api/account/" + accnumb + "/conversations/search?offset=" + offset1 + "&limit=100&sort=start:desc",
@@ -2538,7 +2538,7 @@ checklogin(accnumb, bearer);
 					      document.getElementById("loaderMSG").innerHTML = "...downloading sessions:" + Math.round(100*(offset1/data._metadata.count)) + "% completed...";
 					      document.getElementById("loaderMSG").style = "color : green";
 					      console.log ("adding conversations...");
-					      loadClosedConvs1(body, offset, callback);
+					      loadClosedConvs1(body, offset, callback1);
 				      }
 				      else{
 					      finish1 = 1;
@@ -2564,7 +2564,7 @@ checklogin(accnumb, bearer);
 	 
 
 	 
-	 function loadClosedConvs2(body, offset2, callback) {
+	 function loadClosedConvs2(body, offset2, callback2) {
 	 
 	 	$.ajax({
                               url: "https://" + uri + "/messaging_history/api/account/" + accnumb + "/conversations/search?offset=" + offset2 + "&limit=100&sort=start:desc",
@@ -2578,7 +2578,7 @@ checklogin(accnumb, bearer);
 				      if((data.conversationHistoryRecords.length) == 100){
 					      offset2 = offset2 + 300;
 					      answer = answer.concat(data.conversationHistoryRecords);
-					      loadClosedConvs2(body, offset, callback);
+					      loadClosedConvs2(body, offset, callback2);
 				      }
 				      else{
 					      finish2 = 1;
@@ -2604,7 +2604,7 @@ checklogin(accnumb, bearer);
 	 
 	 
 	 
-	 function loadClosedConvs3(body, offset3, callback) {
+	 function loadClosedConvs3(body, offset3, callback3) {
 	 
 	 	$.ajax({
                               url: "https://" + uri + "/messaging_history/api/account/" + accnumb + "/conversations/search?offset=" + offset3 + "&limit=100&sort=start:desc",
@@ -2618,7 +2618,7 @@ checklogin(accnumb, bearer);
 				      if((data.conversationHistoryRecords.length) == 100){
 					      offset3 = offset3 + 300;
 					      answer = answer.concat(data.conversationHistoryRecords);
-					      loadClosedConvs2(body, offset, callback);
+					      loadClosedConvs2(body, offset, callback3);
 				      }
 				      else{
 					      finish3 = 1;
