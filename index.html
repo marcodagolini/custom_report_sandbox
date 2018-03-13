@@ -7,6 +7,7 @@
 
 
 
+
 <head>
   
 </head>
@@ -223,6 +224,7 @@ span.psw {
 
     
 
+
     <div id="loadingStats">
 	    </br></br>
 	    <label><b>...loading your stats...</b></label></br></br>
@@ -233,6 +235,8 @@ span.psw {
     </div>
 
     <div id="loadedStats" style="display:none;">
+	    </br>
+	    <div id="reportBot"></div>
 	    <h2>Statistics:</h2>
 	<label><b>Skill</b></label></br>   
 	<div id="skill"></div>
@@ -550,9 +554,39 @@ span.psw {
 	  
   }
 	
-  function refreshDates(){
-	  
-  }
+ 
+	
+function botOrNot() {
+        var xhr = new XMLHttpRequest();
+        xhr.addEventListener("readystatechange", function () {
+          	if (this.readyState === 4) {
+			if (this.status == 200 && xhr.status < 300){
+				document.getElementById("reportBot").innerHTML = "Il bot e' connesso";
+				document.getElementById("reportBot").style = "color : green";
+				document.getElementById("reportBot").style.fontWeight = "bold";
+				document.getElementById("reportBot").style.fontSize = "xx-large";
+			}
+			else{
+				document.getElementById("reportBot").innerHTML = "Il bot non e' connesso";
+				document.getElementById("reportBot").style = "color : red";
+				document.getElementById("reportBot").style.fontWeight = "bold";
+				document.getElementById("reportBot").style.fontSize = "xx-large";
+			}
+          	}
+		else {
+            		document.getElementById("reportBot").innerHTML = "...checking bot status...";
+            		document.getElementById("reportBot").style = "color : black";
+			document.getElementById("reportBot").style.fontWeight = "bold";
+			document.getElementById("reportBot").style.fontSize = "xx-large";
+          	}
+        });
+        var URLforGET = "https://vodafonebotdario.herokuapp.com/ping?ping=true&username=" + localStorage.getItem('username');
+	xhr.open("GET", URLforGET);
+        xhr.send();
+}
+	
+	
+	
 	
 	
   function secondsToString(timeInSeconds){
@@ -590,11 +624,11 @@ span.psw {
 	}
 	return stringAnswer;
   }
-
 	
   function loadLimboBar(){
 	  
 	 var howManyLimbo = 0; 
+	 var howManyUnassigned = 0;
 	 var body = body = '{"start":{"from":' + (Date.now() - (1000*60*60*24*30)) + ',"to":' + (Date.now()) + '}, "status": ["OPEN"]}';
 	 var offset = 0;
 	  
@@ -607,17 +641,22 @@ span.psw {
                               contentType: "application/json",
                               data: body,
                               success: function success(data) {
+				      botOrNot();
 				      if((data._metadata.count) > 0){
 					      var length = data.conversationHistoryRecords.length;
 					      for (var m = 0; m < length; m++){
 						      if((data.conversationHistoryRecords[m].info.latestSkillName) === "Limbo"){
-							      howManyLimbo = howManyLimbo +1;
-						      }	      
+							      howManyLimbo = howManyLimbo + 1;
+						      }
+						      else{
+							      if((data.conversationHistoryRecords[m].info.latestAgentLoginName) === "NA"){
+								      howManyUnassigned = howManyUnassigned + 1;
+							      }   
+						      }
 					      }
-
 				      }
 				      document.getElementById("limbo").innerHTML = howManyLimbo;
-
+				      document.getElementById("unassigned").innerHTML = howManyUnassigned;
                               },
                               error: function error(e, text) {
 		 
@@ -638,6 +677,7 @@ span.psw {
                     cache: true,
                     dataType: "jsonp",
                     success: function success(data) {
+			loadLimboBar();
                         if('lpCallError' in data.ResultSet){
 				localStorage.setItem('account_number', '');
 			   	location.reload(); 
@@ -654,7 +694,6 @@ span.psw {
                               		success: function success(data) {
 						document.getElementById("open").innerHTML = data.active;
 						document.getElementById("pending").innerHTML = data.pending;
-						document.getElementById("unassigned").innerHTML = data.unassigned;
 						document.getElementById("overdue").innerHTML = data.overdue;
 						document.getElementById("soonOverdue").innerHTML = data.soonToOverdue;
                               		},
@@ -874,10 +913,19 @@ span.psw {
 			  }
 		  }	 		  
 	  }
+	   for (var m = 0; m < length; m++){
+		 whatTime = answer[m].info.startTimeL;
+		 if(answer[m].info.status === "CLOSE" && answer[m].info.closeReason === "AGENT" && answer[m].info.latestSkillName === "Limbo"){
+			 if((whatTime > customDate) && (whatTime < endCustomDate)){
+				 numberConvs = numberConvs + 1;
+			 }
+		 }
+		 
+	 }
 	  document.getElementById("customTimeClosedClosedAutomatic").innerHTML = numberConvs;
 	  numberConvs = 0;
 	  for (var m = 0; m < length; m++){
-		  if (answer[m].info.status === "CLOSE" && answer[m].info.closeReasonDescription === "MANUAL_CLOSE"){
+		  if (answer[m].info.status === "CLOSE" && answer[m].info.closeReason === "AGENT" && answer[m].info.latestSkillName !== "Limbo"){
 			  whatTime = answer[m].info.startTimeL;
 			  if((whatTime > customDate) && (whatTime < endCustomDate)){
 				 numberConvs = numberConvs + 1;  
@@ -1141,7 +1189,6 @@ span.psw {
 	 var numberOneHourAgo = 0;
 	 var numberOneDayAgo = 0;
 	 var numberOneMonthAgo = 0;
-	 console.log(answer);
 	 var length = answer.length;
 	 var howManyMessages;
 	 var TimeAnswer = 0;
@@ -1271,7 +1318,7 @@ span.psw {
 	 numberOneMonthAgo = 0;
 	 for (var m = 0; m < length; m++){
 		 whatTime = answer[m].info.startTimeL;
-		 if (answer[m].info.status === "CLOSE" && answer[m].info.closeReasonDescription === "MANUAL_CLOSE"){
+		 if (answer[m].info.status === "CLOSE" && answer[m].info.closeReason === "AGENT" && answer[m].info.latestSkillName !== "Limbo"){
 			if (whatTime > tenMinutesAgo){
 				numberTenMinutesAgo = numberTenMinutesAgo + 1; 
 		 	}
@@ -1313,6 +1360,24 @@ span.psw {
 				numberOneMonthAgo = numberOneMonthAgo + 1;
 		 	} 
 		 }
+	 }
+	 for (var m = 0; m < length; m++){
+		 whatTime = answer[m].info.startTimeL;
+		 if(answer[m].info.status === "CLOSE" && answer[m].info.closeReason === "AGENT" && answer[m].info.latestSkillName === "Limbo"){
+			if (whatTime > tenMinutesAgo){
+				numberTenMinutesAgo = numberTenMinutesAgo + 1;
+			}
+			 else if (whatTime > oneHourAgo){
+				 numberOneHourAgo = numberOneHourAgo + 1;
+			 }
+			 else if (whatTime > midnightToday){
+				 numberOneDayAgo = numberOneDayAgo + 1;
+			 }
+			 else{
+				 numberOneMonthAgo = numberOneMonthAgo + 1;
+			 }
+		 }
+		 
 	 }
 	 numberOneHourAgo = numberTenMinutesAgo + numberOneHourAgo;
 	 numberOneDayAgo = numberOneDayAgo + numberOneHourAgo;
@@ -1791,7 +1856,7 @@ span.psw {
 		 howManyMessages = answer[m].messageRecords.length;
 		 if(howManyMessages){
 		 if (answer[m].info.status === "CLOSE" && answer[m].messageRecords[0].sentBy === "Consumer"){
-			whatTime = answer[m].messageRecords[0].timeL;
+			whatTime = answer[m].info.startTimeL;
 			if(answer[m].hasOwnProperty('agentParticipants') && answer[m].agentParticipants.length){
 				TimeAnswer = (answer[m].agentParticipants[0].timeL - whatTime)/1000;
 				if (whatTime > tenMinutesAgo){
@@ -1928,7 +1993,7 @@ span.psw {
 		 howManyMessages = answer[m].messageRecords.length;
 		 if(howManyMessages){
 		 if (answer[m].info.status === "OPEN" && answer[m].messageRecords[0].sentBy === "Consumer"){
-			whatTime = answer[m].messageRecords[0].timeL;
+			whatTime = answer[m].info.startTimeL;
 			if(answer[m].hasOwnProperty('agentParticipants') && answer[m].agentParticipants.length){
 				TimeAnswer = (answer[m].agentParticipants[0].timeL - whatTime)/1000;
 				if (whatTime > tenMinutesAgo){
@@ -2086,8 +2151,10 @@ span.psw {
                               		success: function success(data) {
 						$('#myloader').css('display', 'none');
           					$('#myreports').css('display', 'inline');
+						setInterval(function(){
+							loadBar();
+						}, 30000);
 						loadBar();
-						loadLimboBar();
 						loadSkills();
 						loadTeams();
 						refreshTranscripts();
@@ -2117,15 +2184,8 @@ span.psw {
 	
 checklogin(accnumb, bearer);
 	
-setInterval(function(){
-	loadBar();
-}, 30000);
-
-setInterval(function(){
-	loadLimboBar();
-}, 30000);
-	
-	
+	 
+		
   
 	
 	
@@ -2184,8 +2244,9 @@ setInterval(function(){
   
   $(document).on('click', function(evt) {
 	  if($("#accnumb").val() != ""){
-		  if($(evt.target).is('#submitLogin')) {
+		  if($(evt.target).is('#submitLogin')) {			  
 			  uname = $("#uname").val();
+			  localStorage.setItem('username', uname);
 			  pwd = $("#pwd").val();
 			  accnumb = $("#accnumb").val();
 			  console.log(accnumb + " *** " + uname + " *** " + pwd);
@@ -2222,8 +2283,10 @@ setInterval(function(){
 								  setTimeout(function(){
 									  $('#myloader').css('display', 'none');
 									  $('#myreports').css('display', 'inline');
+									  setInterval(function(){
+										  loadBar();
+									  }, 30000);
 									  loadBar();
-									  loadLimboBar();
 									  loadSkills();
 									  loadTeams();
 									  refreshTranscripts();
@@ -2592,7 +2655,6 @@ setInterval(function(){
 					      document.getElementById("reportMSG").innerHTML = "...downloading sessions:" + Math.round(100*(offset/data._metadata.count)) + "% completed...";
 					      document.getElementById("reportMSG").style = "color : green";      
 					      console.log(data.conversationHistoryRecords);
-					      console.log(answer);
 					      console.log ("adding conversations...");
 					      // setTimeout(function(){
 						      tryUntilSuccess(offset, callback);
@@ -2600,7 +2662,6 @@ setInterval(function(){
 				      }
 				      else{
 					      answer = answer.concat(data.conversationHistoryRecords);
-					      console.log(answer);
 					      console.log(answer.length);
 					      document.getElementById("reportMSG").innerHTML = answer.length + " Messaging conversations downloaded with success!";
 					      document.getElementById("reportMSG").style = "color : green";
@@ -2625,21 +2686,13 @@ setInterval(function(){
 							      thisactor = answer[i].messageRecords[m].sentBy;
 							      messages = messages + "     " + thisactor + ": " + thismessage;
 						      }
-						      if(answer[i].info.endTime === -1){
+						      if(answer[i].info.endTimeL === -1){
 							      endReason = "IN_PROGRESS";
 						      }
 						      else{
-							      if(answer[i].info.closeReason === "AGENT"){
-								      var a = (answer[i].agentParticipants.length - 1);
-								      if(typeof answer[i].agentParticipants[0] !== 'undefined'){
-									      if((answer[i].agentParticipants[a].agentLoginName === "botLivePerson") && (answer[i].agentParticipants[a].permission === "ASSIGNED_AGENT")){
-										      console.log(answer[i].agentParticipants[a].agentLoginName);
-										      endReason = "AUTO_CLOSURE";
-									      }else{
-										      endReason = answer[i].info.closeReason;
-									      }
-								      }
-								      
+							      if(answer[i].info.latestSkillName === "Limbo"){
+								      endReason = "AUTO_CLOSURE";
+      
 							      }else{
 								      endReason = answer[i].info.closeReason;
 							      }
@@ -2718,7 +2771,58 @@ setInterval(function(){
 							      }
 						      }
 						      
-						      
+						      var yesno = "-";
+						      var comments = "-";
+						      if(answer[i].hasOwnProperty('transfers')){
+							      if (typeof answer[i].transfers !== 'undefined' && answer[i].transfers.length > 0) {
+								      var arraylength = answer[i].transfers.length;
+								      for (var z = (arraylength -1); z > -1; z--){
+									      if(answer[i].transfers[z].hasOwnProperty('contextData')){
+										      if(answer[i].transfers[z].contextData.hasOwnProperty('structuredMetadata')){
+											      yesno = answer[i].transfers[z].contextData.structuredMetadata[0].botResponse.intents[0].name;
+											      if (yesno !== undefined || yesno !== "---"){
+												      comments = answer[i].transfers[z].contextData.structuredMetadata[0].botResponse.intents[1].name;
+												      z = 0;
+											      }
+											      
+										      }
+									      }
+								      }
+							      }
+						      }
+						      if(yesno === undefined || yesno ==="-"){
+							      yesno = "---";
+						      }
+						      var skill = answer[i].info.latestSkillName;
+						      var limbo = 0;
+						      var risvegliata = 0;
+						      var limboaveragetime = 0;
+						      var startLimbo = 0;
+						      var totalLimbo = 0;
+						      if(answer[i].hasOwnProperty('transfers')){
+							      if (typeof answer[i].transfers !== 'undefined' && answer[i].transfers.length > 0) {
+								      var arraylength = answer[i].transfers.length;
+								      for (var z = 0; z < arraylength; z++){
+									      if ((answer[i].transfers[z].targetSkillName === "Limbo") && (answer[i].transfers[z].sourceSkillName !== "Limbo")){
+										      limbo = limbo +1;
+										      startLimbo = answer[i].transfers[z].timeL;
+									      }
+									      if ((answer[i].transfers[z].targetSkillName !== "Limbo") && (answer[i].transfers[z].sourceSkillName === "Limbo")){
+										      risvegliata = risvegliata +1;
+										      totalLimbo = totalLimbo + ((answer[i].transfers[z].timeL - startLimbo)/1000);
+									      }
+								      }
+							      }
+						      }
+						      if(answer[i].info.latestSkillName === "Limbo"){
+							      limboaveragetime = "botClose";
+						      }
+						      else if(limbo){
+							      limboaveragetime = Math.floor(totalLimbo/limbo);
+						      }
+						      else{
+							      limboaveragetime = "agentClose";
+						      }
 						      
 						      var timeToAccept = 0;
 						      TimeAnswer = 0;
@@ -2741,12 +2845,76 @@ setInterval(function(){
 							      }
 						      }
 						      
+						      var efforttime = 0;
+						      var startTimestamp = 0;
+						      var managedByAgent = 0;
+						      howManyMessages = answer[i].messageRecords.length;
+						      if(howManyMessages && answer[i].hasOwnProperty('agentParticipants') && (answer[i].info.status) === "CLOSE"){
+							      var howManyPartecipants = answer[i].agentParticipants.length;
+							      if ((howManyPartecipants == 1) && (answer[i].agentParticipants[0].agentLoginName !== "botLivePerson") && (answer[i].agentParticipants[0].permission === "ASSIGNED_AGENT") && !((answer[i].agentParticipants[0].agentLoginName).indexOf("@") > -1)){
+								      efforttime = ((answer[i].messageRecords[(howManyMessages - 1)].timeL - answer[i].agentParticipants[0].timeL)/1000);
+							      }
+							      else{
+								      for (var z = 0; z < howManyPartecipants; z++){
+									      if ((answer[i].agentParticipants[z].agentLoginName !== "botLivePerson") && (answer[i].agentParticipants[z].permission === "ASSIGNED_AGENT") && !((answer[i].agentParticipants[z].agentLoginName).indexOf("@") > -1) && !managedByAgent){
+										      startTimestamp = answer[i].agentParticipants[z].timeL;
+										      managedByAgent = 1;
+									      } else if(managedByAgent && (answer[i].agentParticipants[z].agentLoginName === "botLivePerson")){
+										      efforttime = efforttime + ((answer[i].agentParticipants[z].timeL - startTimestamp)/1000);
+										      managedByAgent = 0;
+									      }
+								      }
+								      if(managedByAgent){
+									      efforttime = efforttime + ((answer[i].messageRecords[(howManyMessages - 1)].timeL - startTimestamp)/1000);
+								      }
+							      }
+						      }
+						      if (efforttime < 0){
+							     efforttime = "---"; 
+						      }
+						      if (efforttime == 0){
+							    efforttime = "---";  
+						      }
+						      else{
+							    efforttime = Math.floor(efforttime)  
+						      }
+						      
+						      if(answer[i].hasOwnProperty('agentParticipants')){
+							      var arrayPartecipantAgents = [];
+							      var arrayPartecipantGroups = [];
+							      var howManyPartecipants = answer[i].agentParticipants.length;
+							      for (var z = 0; z < howManyPartecipants; z++){
+								      if((answer[i].agentParticipants[z].agentLoginName !== "botLivePerson") && (answer[i].agentParticipants[z].permission === "ASSIGNED_AGENT") && !((answer[i].agentParticipants[z].agentLoginName).indexOf("@") > -1)){
+									      if(!arrayPartecipantAgents.includes(answer[i].agentParticipants[z].agentLoginName)){
+										      arrayPartecipantAgents.push(answer[i].agentParticipants[z].agentLoginName);
+									      }
+									      if(!arrayPartecipantGroups.includes(answer[i].agentParticipants[z].agentGroupName)){
+										      arrayPartecipantGroups.push(answer[i].agentParticipants[z].agentGroupName);
+									      }
+								      }
+							      }
+							      var numeroagenti = arrayPartecipantAgents.length;
+							      var numerogruppi = arrayPartecipantGroups.length;
+							      console.log(arrayPartecipantAgents);
+							      console.log(arrayPartecipantGroups);
+						      }
+						      
+						      var endDateEngagement = "";
+						      var durationinseconds = "";
 						      var startDateEngagement = new Date(answer[i].info.startTimeL);
-						      var endDateEngagement = new Date(answer[i].info.endTimeL);
+						      if (answer[i].info.endTimeL != -1){
+							      endDateEngagement = new Date(answer[i].info.endTimeL);
+							      durationinseconds = Math.floor((answer[i].info.endTimeL - answer[i].info.startTimeL)/1000);
+						      }
+						      else{
+							      endDateEngagement = "---";
+							      durationinseconds = "---";
+						      }
+						      
 						      
       
 						      
-						      var pieceToAdd = {"start": startDateEngagement,"end": endDateEngagement,"agent": answer[i].info.latestAgentLoginName,"team": answer[i].info.latestAgentGroupName,"endReason": endReason,"timeToAccept": timeToAccept,"firstTimeAnswer": firstTimeAnswer,"customerName": customerName,"phoneNumber": phoneNumber,"imeiNumber": imeiNumber,"conversation": answer[i].info.conversationId,"transcript": messages};
+						      var pieceToAdd = {"start": startDateEngagement,"end": endDateEngagement, "durationinseconds": durationinseconds, "efforttime": efforttime, "agent": answer[i].info.latestAgentLoginName,"team": answer[i].info.latestAgentGroupName,"skill": skill,"limbo": limbo,"limboaveragetime": limboaveragetime,"risvegliata": risvegliata,"numeroagenti": numeroagenti,"numerogruppi": numerogruppi,"yesno": yesno,"comments": comments,"endReason": endReason,"timeToAccept": timeToAccept,"firstTimeAnswer": firstTimeAnswer,"customerName": customerName,"phoneNumber": phoneNumber,"imeiNumber": imeiNumber,"conversation": answer[i].info.conversationId,"transcript": messages};
 						      exportObject = exportObject.concat(pieceToAdd);
 					      }
 				      	      console.log(exportObject);
@@ -2779,8 +2947,18 @@ setInterval(function(){
 		 testTypes = {
     			"start": "String",
     			"end": "String",
+			"durationinseconds": "String",
+			"efforttime": "String",
     			"agent": "String",
 			"team": "String",
+			"skill": "String",
+			"limbo": "String",
+			"limboaveragetime": "String",
+			"risvegliata": "String",
+			"numeroagenti": "String",
+			"numerogruppi": "String",
+			"yesno": "String",
+			"comments": "String",
 			"endReason": "String",
 			"timeToAccept": "String",
 			"firstTimeAnswer": "String",
